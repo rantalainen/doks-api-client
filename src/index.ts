@@ -154,12 +154,17 @@ export class DoksApiClient {
    * @param customerId Customer id in Doks
    * @param request Required fields: `email`
    */
-   async createInformationRequestByCustomerId(customerId: string, request: Partial<IDoksInformationRequest>): Promise<IDoksInformationRequest> {
+  async createInformationRequestByCustomerId(customerId: string, request: Partial<IDoksInformationRequest>): Promise<IDoksInformationRequest> {
     return await this.request('POST', `user/customers/${customerId}/requests`, request);
   }
 
   async sendInformationRequestByCustomerAndIdentificationId(customerId: string, identificationId: string) {
     return await this.request('POST', `user/customers/${customerId}/requests/${identificationId}/send`, {});
   }
+
+  async getInformationRequestByCustomerAndIdentificationId(customerId: string, identificationId: string) {
+    return await this.request('GET', `user/customers/${customerId}/identifications/${identificationId}`);
+  }
+
 
 }
