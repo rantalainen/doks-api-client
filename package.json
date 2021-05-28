@@ -1,0 +1,28 @@
+{
+  "name": "doks-api-client",
+  "version": "0.0.1",
+  "description": "Doks third party API client",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsc --watch",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tonitakala/doks-api-client.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tonitakala/doks-api-client/issues"
+  },
+  "homepage": "https://github.com/tonitakala/doks-api-client#readme",
+  "devDependencies": {
+    "typescript": "^4.3.2"
+  },
+  "dependencies": {
+    "agentkeepalive": "^4.1.4",
+    "got": "^11.8.2",
+    "moment": "^2.29.1"
+  }
+}
