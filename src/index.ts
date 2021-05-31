@@ -131,7 +131,7 @@ export class DoksApiClient {
     return await this.request('POST', 'user/customers', customer);
   }
 
-  async getIdentificationsByCustomerId(customerId: string): Promise<IDoksIdentification> {
+  async getIdentificationsByCustomerId(customerId: string): Promise<IDoksIdentification[]> {
     return await this.request('GET', `user/customers/${customerId}/identifications`);
   }
 
@@ -144,15 +144,15 @@ export class DoksApiClient {
     return await this.request('POST', `user/customers/${customerId}/identifications`, identification);
   }
 
-  async getIdentificationByCustomerAndIdentificationId(customerId: string, identificationId: string) {
-    return await this.request('GET', `user/customers/${customerId}/identifications/${identificationId}/send`);
+  async getIdentificationByCustomerAndIdentificationId(customerId: string, identificationId: string): Promise<IDoksIdentification> {
+    return await this.request('GET', `user/customers/${customerId}/identifications/${identificationId}`);
   }
 
-  async sendIdentificationByCustomerAndIdentificationId(customerId: string, identificationId: string) {
+  async sendIdentificationByCustomerAndIdentificationId(customerId: string, identificationId: string): Promise<IDoksIdentification> {
     return await this.request('POST', `user/customers/${customerId}/identifications/${identificationId}/send`, {});
   }
 
-  async getInformationRequestsByCustomerId(customerId: string): Promise<IDoksInformationRequest> {
+  async getInformationRequestsByCustomerId(customerId: string): Promise<IDoksInformationRequest[]> {
     return await this.request('GET', `user/customers/${customerId}/requests`);
   }
 
@@ -165,11 +165,11 @@ export class DoksApiClient {
     return await this.request('POST', `user/customers/${customerId}/requests`, request);
   }
 
-  async sendInformationRequestByCustomerAndIdentificationId(customerId: string, identificationId: string) {
+  async sendInformationRequestByCustomerAndIdentificationId(customerId: string, identificationId: string): Promise<IDoksInformationRequest> {
     return await this.request('POST', `user/customers/${customerId}/requests/${identificationId}/send`, {});
   }
 
-  async getInformationRequestByCustomerAndIdentificationId(customerId: string, identificationId: string) {
+  async getInformationRequestByCustomerAndIdentificationId(customerId: string, identificationId: string): Promise<IDoksInformationRequest> {
     return await this.request('GET', `user/customers/${customerId}/identifications/${identificationId}`);
   }
 
@@ -178,7 +178,7 @@ export class DoksApiClient {
    * @param filters filter field name must be contained in `IDoksCustomer`
    * @param fields list of fields that should be returned, fields must be contained in `IDoksCustomer` and `id` is always returned
    */
-  async getCustomersByFilters(filters: Partial<IDoksCustomer>, fields?: string[]) {
+  async getCustomersByFilters(filters: Partial<IDoksCustomer>, fields?: string[]): Promise<Partial<IDoksCustomer[]>> {
     const params: any = { ...filters };
 
     if (fields) {
