@@ -61,6 +61,15 @@ const newCustomer = await doks.createCustomer({
   type: 'business'
 });
 
+// Filter customers and return only needed fields
+const customers = await doks.getCustomersByFilters(
+  // Filtered fields
+  {  businessid : '1234567-8' },
+
+  // Returned fields
+  ['name', 'businessid']
+);
+
 // Get customer identifications
 const identifications = await doks.getIdentificationsByCustomerId(exampleCustomerId);
 
@@ -94,6 +103,15 @@ const sentInformationRequest = await doks.sendInformationRequestByCustomerAndIde
 
 // Get single information request
 const informationRequest = await doks.getInformationRequestByCustomerAndIdentificationId(exampleCustomerId, newInformationRequest.id);
+```
+
+## Helpers
+
+Contains some helpers for handling customers details.
+
+```javascript
+// Validate business id
+const validBusinessId = doks.isValidBusinessId('1234567-8'); // true or false
 ```
 
 ## Changelog

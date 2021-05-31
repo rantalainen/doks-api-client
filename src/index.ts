@@ -1,4 +1,4 @@
-import got, { Headers, Method, OptionsOfJSONResponseBody } from 'got';
+import got, { Headers, Method, OptionsOfJSONResponseBody, OptionsOfUnknownResponseBody } from 'got';
 import { IDoksApiClientOptions, IDoksApiResponse, IDoksCustomer, IDoksIdentification, IDoksInformationRequest } from './interfaces';
 import moment from 'moment';
 import { HttpsAgent } from 'agentkeepalive';
@@ -75,20 +75,27 @@ export class DoksApiClient {
   }
 
   /** @private */
-  async request(method: Method, uri: string, json?: any): Promise<any> {
-    const response: IDoksApiResponse = await got({
+  async request(method: Method, uri: string, json?: any, params?: any): Promise<any> {
+    const gotOptions: OptionsOfJSONResponseBody = {
       url  : this.constructUrl(uri),
-      json : json,
 
       headers : await this.getDefaultHttpHeaders(),
       agent   : { https : this.keepAliveAgent },
 
-      resolveBodyOnly: true,
       responseType    : 'json',
       throwHttpErrors : false,
 
+      searchParams: params,
+
       method
-    });
+    };
+
+    // If body is defined
+    if (json) {
+      gotOptions.json = json;
+    }
+
+    const response: IDoksApiResponse = await got({ ...gotOptions, resolveBodyOnly : true });
 
     if ( ! response.status ) {
       return this.httpErrorHandler(response);
@@ -166,5 +173,18 @@ export class DoksApiClient {
     return await this.request('GET', `user/customers/${customerId}/identifications/${identificationId}`);
   }
 
+  /**
+   * Get customers by filters
+   * @param filters filter field name must be contained in `IDoksCustomer`
+   * @param fields list of fields that should be returned, fields must be contained in `IDoksCustomer` and `id` is always returned
+   */
+  async getCustomersByFilters(filters: Partial<IDoksCustomer>, fields?: string[]) {
+    const params: any = { ...filters };
 
+    if (fields) {
+      params.fields = fields.join(',');
+    }
+
+    return await this.request('GET', `user/filter`, null, params);
+  }
 }
