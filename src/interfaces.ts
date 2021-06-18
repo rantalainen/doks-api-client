@@ -72,6 +72,8 @@ export interface IDoksIdentification {
   is_accepted: boolean;
   email: string;
   name: string;
+  /** Should we ask pep questions */
+  ask_pep: boolean;
   /** Description is visible in identification form */
   description: string;
   /** Note is visible in invitation email */
