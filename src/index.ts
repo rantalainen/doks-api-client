@@ -1,5 +1,5 @@
 import got, { Headers, Method, OptionsOfJSONResponseBody, OptionsOfUnknownResponseBody } from 'got';
-import { IDoksApiClientOptions, IDoksApiResponse, IDoksCustomer, IDoksIdentification, IDoksInformationRequest } from './interfaces';
+import { IDoksActualBeneficiaryDocumentWithMetadata, IDoksApiClientOptions, IDoksApiResponse, IDoksCustomer, IDoksDocument, IDoksIdentification, IDoksInformationRequest, IDoksOwner } from './interfaces';
 import moment from 'moment';
 import { HttpsAgent } from 'agentkeepalive';
 import * as validators from './helpers/validators';
@@ -14,7 +14,7 @@ export class DoksApiClient {
   accessToken: string | undefined;
 
   /** @private */
-  accessTokenExpiresAt: moment.Moment | undefined;
+  accessTokenTimeout: any;
 
   constructor(options: IDoksApiClientOptions) {
     this.options = options;
@@ -37,10 +37,15 @@ export class DoksApiClient {
   }
 
   /** @private */
+  resetAccessToken() {
+    this.accessToken = undefined;
+  }
+  
+  /** @private */
   async refreshAccessToken(): Promise<void> {
     
     // If refreshing access token is necessary
-    if ( ! this.accessTokenExpiresAt || moment().isAfter(this.accessTokenExpiresAt)) {
+    if ( ! this.accessToken ) {
       const accessTokenResult : IDoksApiResponse = await got({
         url    : `${this.options.apiBaseUrl}/${this.options.apiVersion}/user/auth`,
         method : 'POST',
@@ -55,8 +60,8 @@ export class DoksApiClient {
 
       this.accessToken = accessTokenResult.data.jwt;
 
-      // Access token expires in 10 seconds, subract 1 seconds just to make sure we refresh in time
-      this.accessTokenExpiresAt = moment().add(9, 'seconds');
+      // Reset token after 50 seconds
+      this.accessTokenTimeout = setTimeout(() => this.resetAccessToken(), 50000);
     }
   }
 
@@ -186,5 +191,41 @@ export class DoksApiClient {
     }
 
     return await this.request('GET', `user/filter`, null, params);
+  }
+
+  async getDocumentsByCustomerId(customerId: string): Promise<IDoksDocument[]> {
+    return await this.request('GET', `user/customers/${customerId}/documents`);
+  }
+
+  async getDocumentsByCustomerIdAndType(customerId: string, type: string): Promise<IDoksDocument[]> {
+    const documents = await this.getDocumentsByCustomerId(customerId);
+    const filtered = documents.filter((document) => document.type === type);
+
+    return filtered;
+  }
+
+  async getOwnersByCustomerId(customerId: string): Promise<IDoksOwner[]> {
+    return await this.request('GET', `user/customers/${customerId}/owners`);
+  }
+
+  async createOwnerByCustomerId(customerId: string, owner: Partial<IDoksOwner>) {
+    return await this.request('POST', `user/customers/${customerId}/owners`, owner);
+  }
+
+  /**
+   * @returns `document` if document found or `undefined` if document could not be found
+   */
+  async buyActualBeneficiariesDocumentByCustomerId(customerId: string): Promise<IDoksActualBeneficiaryDocumentWithMetadata | undefined> {
+    try {
+      const document = await this.request('POST', `user/customers/${customerId}/documents/buy/actualbeneficiaries`, {});
+      
+      return document;
+    } catch (e) {
+      if (e.message?.includes('USER_CUSTOMERS_DOCUMENTS_ACTUALBENEFICIARIES_NO_ACTUAL_BENEFICIARIES_FOUND')) {
+        return undefined;
+      } else {
+        throw e;
+      }
+    }
   }
 }

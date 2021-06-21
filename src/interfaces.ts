@@ -101,6 +101,7 @@ export interface IDoksInformationRequest {
   ask_owners: boolean;
   ask_sof: boolean;
   ask_riskquestions: boolean;
+  prefill_owners: boolean;
   riskquestions_type?: string;
   email: string;
   /** Description is visible in identification form */
@@ -116,4 +117,65 @@ export interface IDoksInformationRequest {
   resent_at: number;
   /** UTC unix timestamp */
   answered_at: number;
+}
+
+export interface IDoksDocument {
+  id: string;
+  organizations_id: string;
+  name: string;
+  users_id: string;
+  type: string;
+  files_id: string;
+  /** UTC unix timestamp */
+  created_at: number;
+  /** UTC unix timestamp */
+  updated_at: number;
+  /** UTC unix timestamp */
+  expires_at: number;
+  
+  metadata?: any[];
+}
+
+export interface IDoksActualBeneficiaryDocumentWithMetadata extends IDoksDocument {
+  metadata: IDoksActualBeneficiary[];
+}
+
+export interface IDoksOwner {
+  id: string;
+  name: string;
+  is_beneficial: boolean;
+  share: number;
+  ssn: string;
+
+  is_pep_family: boolean;
+  is_pep_partner: boolean;
+  is_pep_self: boolean;
+  nationality: string;
+
+  customers_id: string;
+  owners_id: string;
+
+  supress_alerts: boolean;
+
+  /** UTC unix timestamp */
+  created_at: number;
+  /** UTC unix timestamp */
+  updated_at: number;  
+}
+
+export interface IDoksActualBeneficiary {
+  dateOfBirth: string;
+  domicile: string;
+  firstname: string;
+  homeCountry: string;
+  nationality: string;
+  otherBeneficialOwnership: boolean;
+  ownershipExtent: number;
+  role: string;
+  socialSecurityNumber: string;
+  status: string;
+  statusEndDate: string;
+  statusStartDate: string;
+  surname: string;
+  voteExtent: number;
 }

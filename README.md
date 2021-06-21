@@ -117,3 +117,4 @@ const validBusinessId = doks.isValidBusinessId('1234567-8'); // true or false
 ## Changelog
 
 0.0.1 Under development
+0.0.4 Add actual beneficiaries document purchase option

@@ -1,6 +1,6 @@
 {
   "name": "doks-api-client",
-  "version": "0.0.3",
+  "version": "0.0.5",
   "description": "Doks third party API client",
   "main": "dist/index.js",
   "scripts": {
@@ -12,7 +12,7 @@
     "url": "git+https://github.com/tonitakala/doks-api-client.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/tonitakala/doks-api-client/issues"
   },
