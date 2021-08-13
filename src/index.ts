@@ -1,5 +1,5 @@
 import got, { Headers, Method, OptionsOfJSONResponseBody, OptionsOfUnknownResponseBody } from 'got';
-import { IDoksActualBeneficiaryDocumentWithMetadata, IDoksApiClientOptions, IDoksApiResponse, IDoksCustomer, IDoksDocument, IDoksIdentification, IDoksInformationRequest, IDoksOwner } from './interfaces';
+import { IDoksActualBeneficiaryDocumentWithMetadata, IDoksApiClientOptions, IDoksApiResponse, IDoksCustomer, IDoksDocument, IDoksIdentification, IDoksInformationRequest, IDoksNewCustomer, IDoksOwner } from './interfaces';
 import moment from 'moment';
 import { HttpsAgent } from 'agentkeepalive';
 import * as validators from './helpers/validators';
@@ -130,9 +130,9 @@ export class DoksApiClient {
 
   /**
    * Create new customer to Doks
-   * @param customer Required fields: `businessid`, `name`, `country`, `type`
+   * @param customer Required fields: `name`, `country`, `type` (person or business)
    */
-  async createCustomer(customer: Partial<IDoksCustomer>): Promise<IDoksCustomer> {
+  async createCustomer(customer: Partial<IDoksNewCustomer>): Promise<IDoksCustomer> {
     return await this.request('POST', 'user/customers', customer);
   }
 

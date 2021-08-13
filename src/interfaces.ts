@@ -33,11 +33,15 @@ export interface IDoksApiResponse {
   errors: IDoksApiResponseError[];
 }
 
+type DoksCustomerType = "business" | "person";
+
 export interface IDoksNewCustomer {
-  businessid: string;
+  businessid?: string;
+  ssn?: string;
+
   name: string;
   country: string;
-  type: string;
+  type: DoksCustomerType;
 
   [propName: string]: any;
 }
