@@ -197,6 +197,15 @@ export class DoksApiClient {
     return await this.request('GET', `user/customers/${customerId}/documents`);
   }
 
+  async getPdfByCustomerId(customerId: string): Promise<Buffer> {
+    await this.refreshAccessToken();
+    const jwt = this.accessToken;
+    
+    const url = this.constructUrl(`user/customers/${customerId}/pdf?jwt=${jwt}`);
+
+    return await got({ method: 'GET', url: url, resolveBodyOnly : true }).buffer();
+  }
+
   async getDocumentsByCustomerIdAndType(customerId: string, type: string): Promise<IDoksDocument[]> {
     const documents = await this.getDocumentsByCustomerId(customerId);
     const filtered = documents.filter((document) => document.type === type);
@@ -220,7 +229,7 @@ export class DoksApiClient {
       const document = await this.request('POST', `user/customers/${customerId}/documents/buy/actualbeneficiaries`, {});
       
       return document;
-    } catch (e) {
+    } catch (e: any) {
       if (e.message?.includes('USER_CUSTOMERS_DOCUMENTS_ACTUALBENEFICIARIES_NO_ACTUAL_BENEFICIARIES_FOUND')) {
         return undefined;
       } else {
