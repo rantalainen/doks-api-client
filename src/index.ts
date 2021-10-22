@@ -52,7 +52,7 @@ export class DoksApiClient {
         agent  : { https : this.keepAliveAgent },
         json   : { 
           apikey : this.options.apikey,
-          email  : this.options.email 
+          email  : this.options.email
         },
 
         resolveBodyOnly : true
@@ -198,12 +198,22 @@ export class DoksApiClient {
   }
 
   async getPdfByCustomerId(customerId: string): Promise<Buffer> {
-    await this.refreshAccessToken();
-    const jwt = this.accessToken;
+    // Fetch short lived access token for PDF fetching
+    const accessTokenResponse: IDoksApiResponse = await got({ 
+      method  : 'PUT', 
+      url     : this.constructUrl('user/auth'),
+      json    : { lifetime: 5 },
+      headers : await this.getDefaultHttpHeaders()
+    }).json();
     
-    const url = this.constructUrl(`user/customers/${customerId}/pdf?jwt=${jwt}`);
+    const url = this.constructUrl(`user/customers/${customerId}/pdf?jwt=${accessTokenResponse.data.jwt}`);
 
-    return await got({ method: 'GET', url: url, resolveBodyOnly : true }).buffer();
+    return await got({ 
+      method          : 'GET', 
+      url             : url, 
+      resolveBodyOnly : true, 
+      agent           : { https : this.keepAliveAgent } 
+    }).buffer();
   }
 
   async getDocumentsByCustomerIdAndType(customerId: string, type: string): Promise<IDoksDocument[]> {
