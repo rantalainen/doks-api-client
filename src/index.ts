@@ -206,11 +206,12 @@ export class DoksApiClient {
       headers : await this.getDefaultHttpHeaders()
     }).json();
     
-    const url = this.constructUrl(`user/customers/${customerId}/pdf?jwt=${accessTokenResponse.data.jwt}`);
+    const url = this.constructUrl(`user/customers/${customerId}/pdf`);
 
     return await got({ 
       method          : 'GET', 
       url             : url, 
+      searchParams    : { jwt: accessTokenResponse.data.jwt },
       resolveBodyOnly : true, 
       agent           : { https : this.keepAliveAgent } 
     }).buffer();
