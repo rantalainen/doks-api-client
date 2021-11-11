@@ -119,3 +119,4 @@ const validBusinessId = doks.isValidBusinessId('1234567-8'); // true or false
 0.0.1 Under development
 0.0.4 Add actual beneficiaries document purchase option
 0.0.8 Fixed jwt token fetch in get pdf summary
+0.0.10 Update customer with patchCustomerById, added property available_eidmethods to IDoksIdentification

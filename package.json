@@ -1,6 +1,6 @@
 {
   "name": "doks-api-client",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Doks third party API client",
   "main": "dist/index.js",
   "scripts": {

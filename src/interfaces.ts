@@ -63,9 +63,13 @@ export interface IDoksCustomer {
   riskratings_id: string;
   /** UTC unix timestamp */
   created_at: number;
+
+  [propName: string]: any;
 }
 
 type IDoksLanguage = 'FI' | 'EN' | 'SE';
+
+type IDoksEIdMethods = 'PASSPORTFILE' | 'NETSEIDENT_BANKID_FI' | 'NETSEIDENT_MOBIILIVARMENNE_FI' | 'NETSEIDENT_PASSPORTREADER'
 
 export interface IDoksIdentification {
   id: string;
@@ -78,6 +82,8 @@ export interface IDoksIdentification {
   name: string;
   /** Should we ask pep questions */
   ask_pep: boolean;
+  /** Pass available identification methods in an array, acceptable values listed in IDoksEIdMethods */
+  available_eidmethods?: IDoksEIdMethods[];
   /** Description is visible in identification form */
   description: string;
   /** Note is visible in invitation email */

@@ -136,6 +136,13 @@ export class DoksApiClient {
     return await this.request('POST', 'user/customers', customer);
   }
 
+  /** Update customer
+   * @param properties updated fields
+   */
+  async patchCustomerById(customerId: string, properties: Partial<IDoksCustomer>): Promise<IDoksCustomer> {
+    return await this.request('PATCH', `user/customers/${customerId}`, properties);
+  }
+
   async getIdentificationsByCustomerId(customerId: string): Promise<IDoksIdentification[]> {
     return await this.request('GET', `user/customers/${customerId}/identifications`);
   }
@@ -146,6 +153,10 @@ export class DoksApiClient {
    * @param identification Required fields: `name` and `email`
    */
   async createIdentificationByCustomerId(customerId: string, identification: Partial<IDoksIdentification>): Promise<IDoksIdentification> {
+    if ( ! identification.available_eidmethods && this.options.apiVersion == 'current' ) {
+      identification['available_eidmethods'] = [ 'NETSEIDENT_BANKID_FI', 'NETSEIDENT_MOBIILIVARMENNE_FI' ];
+    }
+
     return await this.request('POST', `user/customers/${customerId}/identifications`, identification);
   }
 
