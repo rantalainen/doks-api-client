@@ -1,7 +1,8 @@
 # Doks API Client
+
 Doks third party API client. Doks website: https://doks.fi
 
-:warning: This tool is in early stages and is subject to change. 
+:warning: This tool is in early stages and is subject to change.
 
 ## Installation
 
@@ -31,12 +32,12 @@ Please consult Doks to get your `email` and `apikey` for API usage.
 
 ```javascript
 const doks = new DoksApiClient({
-  apikey : 'doks-api-key-here',
-  email  : 'api-user-email-here',
+  apikey: 'doks-api-key-here',
+  email: 'api-user-email-here',
 
   // optional
-  apiVersion : 'v1.89', // lock api version
-  apiBaseUrl : 'https://url' // change base url, defaults to https://data.doks.fi/api
+  apiVersion: 'v1.89', // lock api version
+  apiBaseUrl: 'https://url' // change base url, defaults to https://data.doks.fi/api
 });
 ```
 
@@ -64,7 +65,7 @@ const newCustomer = await doks.createCustomer({
 // Filter customers and return only needed fields
 const customers = await doks.getCustomersByFilters(
   // Filtered fields
-  {  businessid : '1234567-8' },
+  { businessid: '1234567-8' },
 
   // Returned fields
   ['name', 'businessid']
@@ -76,7 +77,7 @@ const identifications = await doks.getIdentificationsByCustomerId(exampleCustome
 // Create identification
 const newIdentification = await doks.createIdentificationByCustomerId(exampleCustomerId, {
   name: 'Person Name',
-  email: 'person.name@email.ltd',
+  email: 'person.name@email.ltd'
 
   // other specs
 });
@@ -93,8 +94,8 @@ const informationRequests = await doks.getInformationRequestsByCustomerId(exampl
 // Create information request
 const newInformationRequest = await doks.createInformationRequestByCustomerId(exampleCustomerId, {
   email: 'person.name@email.ltd',
-  ask_riskquestions : true,
-  
+  ask_riskquestions: true
+
   // other specs
 });
 
@@ -120,3 +121,4 @@ const validBusinessId = doks.isValidBusinessId('1234567-8'); // true or false
 0.0.4 Add actual beneficiaries document purchase option
 0.0.8 Fixed jwt token fetch in get pdf summary
 0.0.10 Update customer with patchCustomerById, added property available_eidmethods to IDoksIdentification
+0.0.11 Added risk assesments and scores

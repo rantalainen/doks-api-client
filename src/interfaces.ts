@@ -17,7 +17,7 @@ type IDoksStatusTypes = 0 | 1;
 export interface IDoksApiResponseError {
   code: string;
   message: string;
-} 
+}
 
 export interface IDoksApiResponse {
   /** false if errors */
@@ -33,7 +33,7 @@ export interface IDoksApiResponse {
   errors: IDoksApiResponseError[];
 }
 
-type DoksCustomerType = "business" | "person";
+type DoksCustomerType = 'business' | 'person';
 
 export interface IDoksNewCustomer {
   businessid?: string;
@@ -45,6 +45,8 @@ export interface IDoksNewCustomer {
 
   [propName: string]: any;
 }
+
+type RiskScoresLevel = 'NA' | 'LOW' | 'REGULAR' | 'HIGH';
 
 export interface IDoksCustomer {
   id: string;
@@ -61,6 +63,9 @@ export interface IDoksCustomer {
   department: string;
   country: string;
   riskratings_id: string;
+  riskscores_level: RiskScoresLevel;
+  /** UTC unix timestamp */
+  riskscores_calculated_at: number;
   /** UTC unix timestamp */
   created_at: number;
 
@@ -69,7 +74,7 @@ export interface IDoksCustomer {
 
 type IDoksLanguage = 'FI' | 'EN' | 'SE';
 
-type IDoksEIdMethods = 'PASSPORTFILE' | 'NETSEIDENT_BANKID_FI' | 'NETSEIDENT_MOBIILIVARMENNE_FI' | 'NETSEIDENT_PASSPORTREADER'
+type IDoksEIdMethods = 'PASSPORTFILE' | 'NETSEIDENT_BANKID_FI' | 'NETSEIDENT_MOBIILIVARMENNE_FI' | 'NETSEIDENT_PASSPORTREADER';
 
 export interface IDoksIdentification {
   id: string;
@@ -142,7 +147,7 @@ export interface IDoksDocument {
   updated_at: number;
   /** UTC unix timestamp */
   expires_at: number;
-  
+
   metadata?: any[];
 }
 
@@ -170,7 +175,7 @@ export interface IDoksOwner {
   /** UTC unix timestamp */
   created_at: number;
   /** UTC unix timestamp */
-  updated_at: number;  
+  updated_at: number;
 }
 
 export interface IDoksActualBeneficiary {
@@ -188,4 +193,32 @@ export interface IDoksActualBeneficiary {
   statusStartDate: string;
   surname: string;
   voteExtent: number;
+}
+
+export interface IDoksRiskAssesment {
+  id: string;
+  customers_id: string;
+  organizations_id: string;
+  users_id: string;
+  description: string;
+  name: string;
+  riskratings_id: string;
+  /** UTC unix timestamp */
+  created_at: number;
+  /** UTC unix timestamp */
+  updated_at: number;
+  /** UTC unix timestamp */
+  expires_at: number;
+
+  [propName: string]: any;
+}
+
+export interface IDoksRiskRating {
+  id: string;
+  organizations_id: string;
+  description: string;
+  name: string;
+  number: number;
+
+  [propName: string]: any;
 }
