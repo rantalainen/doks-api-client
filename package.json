@@ -1,5 +1,5 @@
 {
-  "name": "doks-api-client",
+  "name": "@rantalainen/doks-api-client",
   "version": "0.0.12",
   "description": "Doks third party API client",
   "main": "dist/index.js",
