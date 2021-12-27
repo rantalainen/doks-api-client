@@ -1,6 +1,6 @@
 {
   "name": "doks-api-client",
-  "version": "0.1.0",
+  "version": "0.0.12",
   "description": "Doks third party API client",
   "main": "dist/index.js",
   "scripts": {
@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/tonitakala/doks-api-client.git"
+    "url": "git+https://github.com/rantalainen/doks-api-client.git"
   },
   "author": "",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tonitakala/doks-api-client/issues"
+    "url": "https://github.com/rantalainen/doks-api-client/issues"
   },
-  "homepage": "https://github.com/tonitakala/doks-api-client#readme",
+  "homepage": "https://github.com/rantalainen/doks-api-client#readme",
   "devDependencies": {
     "typescript": "^4.3.2"
   },
@@ -27,5 +27,8 @@
   },
   "files": [
     "dist/**/*"
-  ]
+  ],
+  "publishConfig": {
+    "access": "public"
+  }
 }
