@@ -112,12 +112,58 @@ export interface IDoksInformationRequest {
   customers_id: string;
   users_id: string;
   is_answered: boolean;
+
+  /** Ask for free text */
   ask_freetext: boolean;
-  ask_owners: boolean;
+
+  /** Free-form description text for free text */
+  ask_freetext_description: boolean;
+
+  /** Ask for source of fund */
   ask_sof: boolean;
+
+  /** Free-form description text for source of fund */
+  ask_sof_description: boolean;
+
+  /** Ask for riskquestions */
   ask_riskquestions: boolean;
-  prefill_owners: boolean;
+
+  /** Set risk questions type (defined in Doks GUI) */
   riskquestions_type?: string;
+
+  /** Ask for actual beneficiaries */
+  ask_actualbeneficiaries: boolean;
+
+  /** Pre-fill actual beneficiaries from latest available data */
+  prefill_actualbeneficiaries: boolean;
+
+  /** Auto-add answered actual beneficiaries to Customer card */
+  autofill_actualbeneficiaries: boolean;
+
+  /** Ask for responsible persons */
+  ask_responsiblepersons: boolean;
+
+  /** Ask responsible persons only, if there is no actual beneficiaries (and `ask_responsiblepersons` is true) */
+  ask_responsiblepersons_ifnecessary: boolean;
+
+  /** Ask for responsible persons ssn (if `ask_responsiblepersons` is also true) */
+  ask_responsiblepersons_ssn: boolean;
+
+  /** Pre-fill responsible persons from latest available data */
+  prefill_responsiblepersons: boolean;
+
+  /** Auto-add answered responsible persons to Customer card */
+  autofill_responsiblepersons: boolean;
+
+  /** Ask for PEP-persons */
+  ask_peps: boolean;
+
+  /** Pre-fill PEP-persons from latest available data */
+  prefill_peps: boolean;
+
+  /** Auto-add answered pep-persons to Customer card */
+  autofill_peps: boolean;
+
   email: string;
   /** Description is visible in identification form */
   description: string;
@@ -132,6 +178,86 @@ export interface IDoksInformationRequest {
   resent_at: number;
   /** UTC unix timestamp */
   answered_at: number;
+}
+
+export interface IDoksOwner {
+  businessid: string;
+  description: string;
+  id: string;
+  name: string;
+  owners_id: string;
+  share: number;
+  ssn: string;
+
+  customers_id: string;
+
+  /** UTC unix timestamp */
+  created_at: number;
+  /** UTC unix timestamp */
+  updated_at: number;
+}
+
+export interface IDoksOwner {
+  businessid: string;
+  description: string;
+  id: string;
+  name: string;
+  owners_id: string;
+  share: number;
+  ssn: string;
+
+  customers_id: string;
+
+  /** UTC unix timestamp */
+  created_at: number;
+  /** UTC unix timestamp */
+  updated_at: number;
+}
+
+export interface IDoksActualBeneficiary {
+  description: string;
+  id: string;
+  name: string;
+
+  /** Two-letter nationality code, FI for example */
+  nationality: string;
+
+  share: number;
+  source: 'DATABASE' | 'MANUAL' | 'REQUEST' | 'UNKNOWN';
+
+  customers_id: string;
+
+  /** UTC unix timestamp */
+  created_at: number;
+  /** UTC unix timestamp */
+  updated_at: number;
+}
+
+export interface IDoksPep {
+  description: string;
+  id: string;
+  is_pep_family: boolean;
+  is_pep_partner: boolean;
+  is_pep_self: boolean;
+  name: string;
+  source: 'MANUAL' | 'REQUEST' | 'IDENTIFICATION' | 'UNKNOWN';
+}
+
+export interface IDoksResponsiblePerson {
+  description: string;
+
+  /** UTC unix timestamp */
+  dob_at: number;
+
+  id: string;
+  name: string;
+
+  /** Two-letter nationality code, FI for example */
+  nationality: string;
+
+  organizations_id: string;
+  role: string;
+  source: 'DATABASE' | 'MANUAL' | 'REQUEST';
 }
 
 export interface IDoksDocument {
@@ -152,33 +278,10 @@ export interface IDoksDocument {
 }
 
 export interface IDoksActualBeneficiaryDocumentWithMetadata extends IDoksDocument {
-  metadata: IDoksActualBeneficiary[];
+  metadata: IDoksActualBeneficiaryDocumentMetadata[];
 }
 
-export interface IDoksOwner {
-  id: string;
-  name: string;
-  is_beneficial: boolean;
-  share: number;
-  ssn: string;
-
-  is_pep_family: boolean;
-  is_pep_partner: boolean;
-  is_pep_self: boolean;
-  nationality: string;
-
-  customers_id: string;
-  owners_id: string;
-
-  supress_alerts: boolean;
-
-  /** UTC unix timestamp */
-  created_at: number;
-  /** UTC unix timestamp */
-  updated_at: number;
-}
-
-export interface IDoksActualBeneficiary {
+export interface IDoksActualBeneficiaryDocumentMetadata {
   dateOfBirth: string;
   domicile: string;
   firstname: string;
