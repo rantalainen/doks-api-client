@@ -319,7 +319,7 @@ export class DoksApiClient {
   /**
    * TODO: Add documentation
    */
-  async getActualBeneficiariesByCustomerId(customerId: string): Promise<IDoksActualBeneficiary> {
+  async getActualBeneficiariesByCustomerId(customerId: string): Promise<IDoksActualBeneficiary[]> {
     return await this.request('GET', `user/customers/${customerId}/actualbeneficiaries`);
   }
 
@@ -333,7 +333,7 @@ export class DoksApiClient {
   /**
    * TODO: Add documentation
    */
-  async getResponsiblePersonsByCustomerId(customerId: string): Promise<IDoksResponsiblePerson> {
+  async getResponsiblePersonsByCustomerId(customerId: string): Promise<IDoksResponsiblePerson[]> {
     return await this.request('GET', `user/customers/${customerId}/responsiblepersons`);
   }
 
@@ -349,7 +349,7 @@ export class DoksApiClient {
   /**
    * TODO: Add documentation
    */
-  async getPepsByCustomerId(customerId: string): Promise<IDoksPep> {
+  async getPepsByCustomerId(customerId: string): Promise<IDoksPep[]> {
     return await this.request('GET', `user/customers/${customerId}/peps`);
   }
 
