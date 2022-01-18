@@ -10,9 +10,12 @@ import {
   IDoksNewCustomer,
   IDoksOwner,
   IDoksRiskRating,
-  IDoksRiskAssesment
+  IDoksRiskAssesment,
+  IDoksActualBeneficiary,
+  IDoksResponsiblePerson,
+  IDoksPep
 } from './interfaces';
-import moment from 'moment';
+
 import { HttpsAgent } from 'agentkeepalive';
 import * as validators from './helpers/validators';
 
@@ -131,10 +134,16 @@ export class DoksApiClient {
     return validators.isValidBusinessId(businessId);
   }
 
+  /**
+   * TODO: Add documentation
+   */
   async getCustomers(): Promise<IDoksCustomer[]> {
     return await this.request('GET', 'user/customers');
   }
 
+  /**
+   * TODO: Add documentation
+   */
   async getCustomerById(customerId: string): Promise<IDoksCustomer> {
     return await this.request('GET', `user/customers/${customerId}`);
   }
@@ -154,18 +163,30 @@ export class DoksApiClient {
     return await this.request('PATCH', `user/customers/${customerId}`, properties);
   }
 
+  /**
+   * TODO: Add documentation
+   */
   async getIdentificationsByCustomerId(customerId: string): Promise<IDoksIdentification[]> {
     return await this.request('GET', `user/customers/${customerId}/identifications`);
   }
 
+  /**
+   * TODO: Add documentation
+   */
   async getRiskRatings(): Promise<IDoksRiskRating[]> {
     return await this.request('GET', 'user/riskratings');
   }
 
+  /**
+   * TODO: Add documentation
+   */
   async getRiskRatingsByCustomerId(customerId: string): Promise<IDoksRiskRating> {
     return await this.request('GET', `user/customers/${customerId}/riskratings`);
   }
 
+  /**
+   * TODO: Add documentation
+   */
   async getRiskAssesmentsByCustomerId(customerId: string): Promise<IDoksRiskAssesment[]> {
     return await this.request('GET', `user/customers/${customerId}/riskassessments`);
   }
@@ -183,14 +204,23 @@ export class DoksApiClient {
     return await this.request('POST', `user/customers/${customerId}/identifications`, identification);
   }
 
+  /**
+   * TODO: Add documentation
+   */
   async getIdentificationByCustomerAndIdentificationId(customerId: string, identificationId: string): Promise<IDoksIdentification> {
     return await this.request('GET', `user/customers/${customerId}/identifications/${identificationId}`);
   }
 
+  /**
+   * TODO: Add documentation
+   */
   async sendIdentificationByCustomerAndIdentificationId(customerId: string, identificationId: string): Promise<IDoksIdentification> {
     return await this.request('POST', `user/customers/${customerId}/identifications/${identificationId}/send`, {});
   }
 
+  /**
+   * TODO: Add documentation
+   */
   async getInformationRequestsByCustomerId(customerId: string): Promise<IDoksInformationRequest[]> {
     return await this.request('GET', `user/customers/${customerId}/requests`);
   }
@@ -207,6 +237,9 @@ export class DoksApiClient {
     return await this.request('POST', `user/customers/${customerId}/requests`, request);
   }
 
+  /**
+   * TODO: Add documentation
+   */
   async sendInformationRequestByCustomerAndIdentificationId(
     customerId: string,
     identificationId: string
@@ -214,6 +247,9 @@ export class DoksApiClient {
     return await this.request('POST', `user/customers/${customerId}/requests/${identificationId}/send`, {});
   }
 
+  /**
+   * TODO: Add documentation
+   */
   async getInformationRequestByCustomerAndIdentificationId(customerId: string, identificationId: string): Promise<IDoksInformationRequest> {
     return await this.request('GET', `user/customers/${customerId}/identifications/${identificationId}`);
   }
@@ -233,10 +269,16 @@ export class DoksApiClient {
     return await this.request('GET', `user/filter`, null, params);
   }
 
+  /**
+   * TODO: Add documentation
+   */
   async getDocumentsByCustomerId(customerId: string): Promise<IDoksDocument[]> {
     return await this.request('GET', `user/customers/${customerId}/documents`);
   }
 
+  /**
+   * TODO: Add documentation
+   */
   async getPdfByCustomerId(customerId: string): Promise<Buffer> {
     // Fetch short lived access token for PDF fetching
     const accessTokenResponse: IDoksApiResponse = await got({
@@ -257,6 +299,9 @@ export class DoksApiClient {
     }).buffer();
   }
 
+  /**
+   * TODO: Add documentation
+   */
   async getDocumentsByCustomerIdAndType(customerId: string, type: string): Promise<IDoksDocument[]> {
     const documents = await this.getDocumentsByCustomerId(customerId);
     const filtered = documents.filter((document) => document.type === type);
@@ -264,12 +309,62 @@ export class DoksApiClient {
     return filtered;
   }
 
+  /**
+   * TODO: Add documentation
+   */
   async getOwnersByCustomerId(customerId: string): Promise<IDoksOwner[]> {
     return await this.request('GET', `user/customers/${customerId}/owners`);
   }
 
+  /**
+   * TODO: Add documentation
+   */
   async createOwnerByCustomerId(customerId: string, owner: Partial<IDoksOwner>) {
     return await this.request('POST', `user/customers/${customerId}/owners`, owner);
+  }
+
+  /**
+   * TODO: Add documentation
+   */
+  async getActualBeneficiariesByCustomerId(customerId: string): Promise<IDoksActualBeneficiary[]> {
+    return await this.request('GET', `user/customers/${customerId}/actualbeneficiaries`);
+  }
+
+  /**
+   * TODO: Add documentation
+   */
+  async createActualBeneficiaryByCustomerId(customerId: string, actualBeneficiary: Partial<IDoksActualBeneficiary>) {
+    return await this.request('POST', `user/customers/${customerId}/actualbeneficiaries`, actualBeneficiary);
+  }
+
+  /**
+   * TODO: Add documentation
+   */
+  async getResponsiblePersonsByCustomerId(customerId: string): Promise<IDoksResponsiblePerson[]> {
+    return await this.request('GET', `user/customers/${customerId}/responsiblepersons`);
+  }
+
+  /**
+   * Create responsible person for customer
+   * @param customerId Customer id in Doks
+   * @param responsiblePerson Required fields: `name` and `source`
+   */
+  async createResponsiblePersonByCustomerId(customerId: string, responsiblePerson: Partial<IDoksResponsiblePerson>) {
+    return await this.request('POST', `user/customers/${customerId}/responsiblepersons`, responsiblePerson);
+  }
+
+  /**
+   * TODO: Add documentation
+   */
+  async getPepsByCustomerId(customerId: string): Promise<IDoksPep[]> {
+    return await this.request('GET', `user/customers/${customerId}/peps`);
+  }
+
+  /**
+   * TODO: Add documentation
+   */
+  async createPepByCustomerId(customerId: string, pep: Partial<IDoksPep>) {
+    return await this.request('POST', `user/customers/${customerId}/peps`, pep);
   }
 
   /**

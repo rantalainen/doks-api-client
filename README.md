@@ -41,6 +41,10 @@ const doks = new DoksApiClient({
 });
 ```
 
+## Properties for resources
+
+You can find properties for each resource from [src/interfaces.ts](src/interfaces.ts)
+
 ## Methods (examples)
 
 ```javascript
@@ -104,6 +108,18 @@ const sentInformationRequest = await doks.sendInformationRequestByCustomerAndIde
 
 // Get single information request
 const informationRequest = await doks.getInformationRequestByCustomerAndIdentificationId(exampleCustomerId, newInformationRequest.id);
+
+// Create owner, responsible person, pep, actual beneficiary
+const owner = await doks.createOwnerByCustomerId('customer_id', { ...props });
+const responsiblePerson = await doks.createResponsiblePersonByCustomerId('customer_id', { ...props });
+const pep = await doks.createPepByCustomerId('customer_id', { ...props });
+const actualBeneficiary = await doks.createActualBeneficiaryBycustomerId('customer_id', { ...props });
+
+// Get owners, responsible persons, peps, actual beneficiaries
+const owners = await doks.getOwnersByCustomerId('customer_id');
+const responsiblePerson = await doks.getResponsiblePersonsByCustomerId('customer_id');
+const pep = await doks.getPepsByCustomerId('customer_id');
+const actualBeneficiary = await doks.getActualBeneficiariesByCustomerId('customer_id');
 ```
 
 ## Helpers
@@ -122,3 +138,4 @@ const validBusinessId = doks.isValidBusinessId('1234567-8'); // true or false
 0.0.8 Fixed jwt token fetch in get pdf summary
 0.0.10 Update customer with patchCustomerById, added property available_eidmethods to IDoksIdentification
 0.0.11 Added risk assesments and scores
+1.0.0 Adapt to breaking changes on Doks API (January 2022), changed properties for owners and added actualBeneficiary, responsiblePerson and pep resources

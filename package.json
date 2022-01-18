@@ -1,6 +1,6 @@
 {
   "name": "@rantalainen/doks-api-client",
-  "version": "0.0.12",
+  "version": "1.0.1",
   "description": "Doks third party API client",
   "main": "dist/index.js",
   "scripts": {
@@ -22,8 +22,7 @@
   },
   "dependencies": {
     "agentkeepalive": "^4.1.4",
-    "got": "^11.8.2",
-    "moment": "^2.29.1"
+    "got": "^11.8.2"
   },
   "files": [
     "dist/**/*"
