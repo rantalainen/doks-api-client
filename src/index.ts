@@ -162,6 +162,10 @@ export class DoksApiClient {
     return await this.request('GET', 'user/riskratings');
   }
 
+  async getRiskRatingsByCustomerId(customerId: string): Promise<IDoksRiskRating> {
+    return await this.request('GET', `user/customers/${customerId}/riskratings`);
+  }
+
   async getRiskAssesmentsByCustomerId(customerId: string): Promise<IDoksRiskAssesment[]> {
     return await this.request('GET', `user/customers/${customerId}/riskassessments`);
   }
