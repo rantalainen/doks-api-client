@@ -10,6 +10,7 @@ import {
   IDoksNewCustomer,
   IDoksOwner,
   IDoksRiskRating,
+  IDoksRiskAnswers,
   IDoksRiskAssesment,
   IDoksActualBeneficiary,
   IDoksResponsiblePerson,
@@ -180,8 +181,8 @@ export class DoksApiClient {
   /**
    * TODO: Add documentation
    */
-  async getRiskRatingsByCustomerId(customerId: string): Promise<IDoksRiskRating> {
-    return await this.request('GET', `user/customers/${customerId}/riskratings`);
+  async getRiskAnswersByCustomerId(customerId: string): Promise<IDoksRiskAnswers[]> {
+    return await this.request('GET', `user/customers/${customerId}/riskanswers`);
   }
 
   /**
