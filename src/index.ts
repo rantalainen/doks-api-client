@@ -270,23 +270,44 @@ export class DoksApiClient {
   }
 
   /**
+   * Gets Customer PDF summary
    * TODO: Add documentation
    */
-  async getPdfByCustomerId(customerId: string): Promise<Buffer> {
+  async getPdfByCustomerId(customerId: string, params?: Record<string, string | number | boolean | null | undefined>): Promise<Buffer> {
     // Fetch short lived access token for PDF fetching
-    const accessTokenResponse: IDoksApiResponse = await got({
+    /*const accessTokenResponse: IDoksApiResponse = await got({
       method: 'PUT',
       url: this.constructUrl('user/auth'),
       json: { lifetime: 5 },
       headers: await this.getDefaultHttpHeaders()
-    }).json();
+    }).json();*/
 
-    const url = this.constructUrl(`user/customers/${customerId}/pdf`);
+    await this.refreshAccessToken();
 
     return await got({
       method: 'GET',
-      url: url,
-      searchParams: { jwt: accessTokenResponse.data.jwt },
+      url: this.constructUrl(`user/customers/${customerId}/pdf`),
+      searchParams: { jwt: this.accessToken, ...params },
+      resolveBodyOnly: true,
+      agent: { https: this.keepAliveAgent }
+    }).buffer();
+  }
+
+  /**
+   * Gets information request PDF summary
+   * TODO: Add documentation
+   */
+  async getPdfByCustomerIdAndInformationRequestId(
+    customerId: string,
+    informationRequestId: string,
+    params?: Record<string, string | number | boolean | null | undefined>
+  ): Promise<Buffer> {
+    await this.refreshAccessToken();
+
+    return await got({
+      method: 'GET',
+      url: this.constructUrl(`user/customers/${customerId}/requests/${informationRequestId}/pdf`),
+      searchParams: { jwt: this.accessToken, ...params },
       resolveBodyOnly: true,
       agent: { https: this.keepAliveAgent }
     }).buffer();
