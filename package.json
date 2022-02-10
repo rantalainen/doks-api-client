@@ -1,6 +1,6 @@
 {
   "name": "@rantalainen/doks-api-client",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Doks third party API client",
   "main": "dist/index.js",
   "scripts": {

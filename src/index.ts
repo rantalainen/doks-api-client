@@ -324,29 +324,6 @@ export class DoksApiClient {
   /**
    * TODO: Add documentation
    */
-  async getInformationRequestPdfByCustomerAndInformationId(customerId: string, informationId: string): Promise<Buffer> {
-    // Fetch short lived access token for PDF fetching
-    const accessTokenResponse: IDoksApiResponse = await got({
-      method: 'PUT',
-      url: this.constructUrl('user/auth'),
-      json: { lifetime: 5 },
-      headers: await this.getDefaultHttpHeaders()
-    }).json();
-
-    const url = this.constructUrl(`user/customers/${customerId}/requests/${informationId}/pdf`);
-
-    return await got({
-      method: 'GET',
-      url: url,
-      searchParams: { jwt: accessTokenResponse.data.jwt },
-      resolveBodyOnly: true,
-      agent: { https: this.keepAliveAgent }
-    }).buffer();
-  }
-
-  /**
-   * TODO: Add documentation
-   */
   async getDocumentsByCustomerIdAndType(customerId: string, type: string): Promise<IDoksDocument[]> {
     const documents = await this.getDocumentsByCustomerId(customerId);
     const filtered = documents.filter((document) => document.type === type);
