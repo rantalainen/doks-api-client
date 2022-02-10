@@ -325,3 +325,22 @@ export interface IDoksRiskRating {
 
   [propName: string]: any;
 }
+
+export interface IDoksRiskAnswers {
+  id: string;
+  organizations_id: string;
+  description: string;
+  points: number;
+  questions: IDoksRiskAnswerQuestionAnswer[];
+  [propName: string]: any;
+}
+
+export interface IDoksRiskAnswerQuestionAnswer {
+  id: string;
+  question: string;
+  answer: any;
+  description: string;
+  points: number;
+
+  [propName: string]: any;
+}

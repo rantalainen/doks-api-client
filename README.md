@@ -139,3 +139,5 @@ const validBusinessId = doks.isValidBusinessId('1234567-8'); // true or false
 0.0.10 Update customer with patchCustomerById, added property available_eidmethods to IDoksIdentification
 0.0.11 Added risk assesments and scores
 1.0.0 Adapt to breaking changes on Doks API (January 2022), changed properties for owners and added actualBeneficiary, responsiblePerson and pep resources
+1.1.0 Added riskanswers
+1.2.0 Added informationRequestPdf
