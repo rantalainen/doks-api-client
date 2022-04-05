@@ -285,11 +285,6 @@ export class DoksApiClient {
     // Fetch short lived access token for PDF fetching
     /*const accessTokenResponse: IDoksApiResponse = await got({
       method: 'PUT',
-      url: this.constructUrl('user/auth'),
-      json: { lifetime: 5 },
-      headers: await this.getDefaultHttpHeaders()
-    }).json();*/
-
     await this.refreshAccessToken();
 
     return await got({
@@ -399,6 +394,40 @@ export class DoksApiClient {
       return document;
     } catch (e: any) {
       if (e.message?.includes('USER_CUSTOMERS_DOCUMENTS_ACTUALBENEFICIARIES_NO_ACTUAL_BENEFICIARIES_FOUND')) {
+        return undefined;
+      } else {
+        throw e;
+      }
+    }
+  }
+
+  /**
+   * @returns `document` if document found or `undefined` if document could not be found
+   */
+  async buyTradeRegisterByCustomerId(customerId: string): Promise<IDoksActualBeneficiaryDocumentWithMetadata | undefined> {
+    try {
+      const document = await this.request('POST', `user/customers/${customerId}/documents/traderegister`, {});
+
+      return document;
+    } catch (e: any) {
+      if (e.message?.includes('USER_CUSTOMERS_DOCUMENTS_FILE_NOT_FOUND')) {
+        return undefined;
+      } else {
+        throw e;
+      }
+    }
+  }
+
+  /**
+   * @returns `document` if document found or `undefined` if document could not be found
+   */
+  async buyResponsiblePersonsByCustomerId(customerId: string): Promise<IDoksActualBeneficiaryDocumentWithMetadata | undefined> {
+    try {
+      const document = await this.request('POST', `user/customers/${customerId}/documents/responsiblepersons`, {});
+
+      return document;
+    } catch (e: any) {
+      if (e.message?.includes('USER_CUSTOMERS_DOCUMENTS_FILE_NOT_FOUND')) {
         return undefined;
       } else {
         throw e;
