@@ -283,8 +283,6 @@ export class DoksApiClient {
    */
   async getPdfByCustomerId(customerId: string, params?: Record<string, string | number | boolean | null | undefined>): Promise<Buffer> {
     // Fetch short lived access token for PDF fetching
-    /*const accessTokenResponse: IDoksApiResponse = await got({
-      method: 'PUT',
     await this.refreshAccessToken();
 
     return await got({
