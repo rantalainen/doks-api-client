@@ -404,7 +404,7 @@ export class DoksApiClient {
    */
   async buyTradeRegisterByCustomerId(customerId: string): Promise<IDoksActualBeneficiaryDocumentWithMetadata | undefined> {
     try {
-      const document = await this.request('POST', `user/customers/${customerId}/documents/traderegister`, {});
+      const document = await this.request('POST', `user/customers/${customerId}/documents/buy/traderegister`, {});
 
       return document;
     } catch (e: any) {
@@ -421,7 +421,7 @@ export class DoksApiClient {
    */
   async buyResponsiblePersonsByCustomerId(customerId: string): Promise<IDoksActualBeneficiaryDocumentWithMetadata | undefined> {
     try {
-      const document = await this.request('POST', `user/customers/${customerId}/documents/responsiblepersons`, {});
+      const document = await this.request('POST', `user/customers/${customerId}/documents/buy/responsiblepersons`, {});
 
       return document;
     } catch (e: any) {
