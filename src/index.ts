@@ -1,4 +1,4 @@
-import got, { Headers, Method, OptionsOfJSONResponseBody, OptionsOfUnknownResponseBody } from 'got';
+import got, { Headers, Method, OptionsOfJSONResponseBody } from 'got';
 import {
   IDoksActualBeneficiaryDocumentWithMetadata,
   IDoksApiClientOptions,
@@ -125,8 +125,13 @@ export class DoksApiClient {
   }
 
   /** @private */
-  httpErrorHandler(response: IDoksApiResponse) {
-    const errors = response.errors.map((e) => `${e.message} (CODE: ${e.code})`).join(', ');
+  httpErrorHandler(response: IDoksApiResponse | any) {
+    // Unhandled errors without Doks wrapper
+    if (!response?.errors) {
+      throw new Error(`Doks HTTP error (${response?.code}): ${response.message}`);
+    }
+
+    const errors = response.errors.map((e: any) => `${e.message} (CODE: ${e.code})`).join(', ');
 
     throw new Error(`Doks HTTP error (${response.code}): ${errors}`);
   }
