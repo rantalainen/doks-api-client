@@ -246,8 +246,8 @@ export interface IDoksPep {
 export interface IDoksResponsiblePerson {
   description: string;
 
-  /** UTC unix timestamp */
-  dob_at: number;
+  /** Date of birth, manually filled in string format */
+  dob: string;
 
   id: string;
   name: string;
