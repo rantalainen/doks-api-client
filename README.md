@@ -142,3 +142,4 @@ const validBusinessId = doks.isValidBusinessId('1234567-8'); // true or false
 1.1.0 Added riskanswers
 1.2.0 Added informationRequestPdf
 1.3.0 Added buyResponsiblePersonsByCustomerId and buyTradeRegisterByCustomerId
+1.3.4 Instantiate HTTPS KeepAliveAgent outside the class to get the most out of it

@@ -20,11 +20,13 @@ import {
 import { HttpsAgent } from 'agentkeepalive';
 import * as validators from './helpers/validators';
 
+const httpsAgent = new HttpsAgent();
+
 export class DoksApiClient {
   options!: IDoksApiClientOptions;
 
   /** @private */
-  keepAliveAgent: HttpsAgent = new HttpsAgent();
+  keepAliveAgent: HttpsAgent = httpsAgent;
 
   /** @private */
   accessToken: string | undefined;
