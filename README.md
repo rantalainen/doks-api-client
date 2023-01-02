@@ -17,7 +17,7 @@ npm install doks-api-client
 ### Import to NodeJS project
 
 ```javascript
-const DoksApiClient = require('doks-api-client').DoksApiClient;
+const { DoksApiClient } = require('doks-api-client');
 ```
 
 ### Import to TypeScript project
@@ -30,14 +30,21 @@ import { DoksApiClient } from 'doks-api-client';
 
 Please consult Doks to get your `email` and `apikey` for API usage.
 
+Since v1.4.0 allows using [cacheable-lookup](https://github.com/szmarczak/cacheable-lookup) with either internal or external dns cache. Make sure you are using `cacheable-lookup@5` which is compatible with `got@11` that is used.
+
 ```javascript
+const dnsCache = new CacheableLookup();
+
 const doks = new DoksApiClient({
   apikey: 'doks-api-key-here',
   email: 'api-user-email-here',
 
   // optional
   apiVersion: 'v1.89', // lock api version
-  apiBaseUrl: 'https://url' // change base url, defaults to https://data.doks.fi/api
+  apiBaseUrl: 'https://url', // change base url, defaults to https://data.doks.fi/api
+
+  // optional - set to true if you want to use internal cache within Doks API Client
+  dnsCache: dnsCache
 });
 ```
 
@@ -133,13 +140,14 @@ const validBusinessId = doks.isValidBusinessId('1234567-8'); // true or false
 
 ## Changelog
 
-0.0.1 Under development
-0.0.4 Add actual beneficiaries document purchase option
-0.0.8 Fixed jwt token fetch in get pdf summary
-0.0.10 Update customer with patchCustomerById, added property available_eidmethods to IDoksIdentification
-0.0.11 Added risk assesments and scores
-1.0.0 Adapt to breaking changes on Doks API (January 2022), changed properties for owners and added actualBeneficiary, responsiblePerson and pep resources
-1.1.0 Added riskanswers
-1.2.0 Added informationRequestPdf
-1.3.0 Added buyResponsiblePersonsByCustomerId and buyTradeRegisterByCustomerId
-1.3.4 Instantiate HTTPS KeepAliveAgent outside the class to get the most out of it
+- 0.0.1 Under development
+- 0.0.4 Add actual beneficiaries document purchase option
+- 0.0.8 Fixed jwt token fetch in get pdf summary
+- 0.0.10 Update customer with patchCustomerById, added property available_eidmethods to IDoksIdentification
+- 0.0.11 Added risk assesments and scores
+- 1.0.0 Adapt to breaking changes on Doks API (January 2022), changed properties for owners and added actualBeneficiary, responsiblePerson and pep resources
+- 1.1.0 Added riskanswers
+- 1.2.0 Added informationRequestPdf
+- 1.3.0 Added buyResponsiblePersonsByCustomerId and buyTradeRegisterByCustomerId
+- 1.3.4 Instantiate HTTPS KeepAliveAgent outside the class to get the most out of it
+- 1.4.0 Add dns caching possibility with cacheableLookup

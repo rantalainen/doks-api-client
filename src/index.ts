@@ -19,8 +19,10 @@ import {
 
 import { HttpsAgent } from 'agentkeepalive';
 import * as validators from './helpers/validators';
+import CacheableLookup from 'cacheable-lookup';
 
 const httpsAgent = new HttpsAgent();
+const cacheableLookup = new CacheableLookup();
 
 export class DoksApiClient {
   options!: IDoksApiClientOptions;
@@ -52,6 +54,11 @@ export class DoksApiClient {
     if (!this.options.apiVersion) {
       this.options.apiVersion = 'current';
     }
+
+    // If dnsCache is true, then fallback to internal instance of cacheableLookup
+    if (this.options.dnsCache === true) {
+      this.options.dnsCache = cacheableLookup;
+    }
   }
 
   /** @private */
@@ -71,6 +78,8 @@ export class DoksApiClient {
           apikey: this.options.apikey,
           email: this.options.email
         },
+
+        dnsCache: this.options.dnsCache || undefined,
 
         resolveBodyOnly: true
       }).json();
@@ -103,6 +112,8 @@ export class DoksApiClient {
 
       headers: await this.getDefaultHttpHeaders(),
       agent: { https: this.keepAliveAgent },
+
+      dnsCache: this.options.dnsCache || undefined,
 
       responseType: 'json',
       throwHttpErrors: false,
@@ -297,6 +308,7 @@ export class DoksApiClient {
       url: this.constructUrl(`user/customers/${customerId}/pdf`),
       searchParams: { jwt: this.accessToken, ...params },
       resolveBodyOnly: true,
+      dnsCache: this.options.dnsCache || undefined,
       agent: { https: this.keepAliveAgent }
     }).buffer();
   }
@@ -317,6 +329,7 @@ export class DoksApiClient {
       url: this.constructUrl(`user/customers/${customerId}/requests/${informationRequestId}/pdf`),
       searchParams: { jwt: this.accessToken, ...params },
       resolveBodyOnly: true,
+      dnsCache: this.options.dnsCache || undefined,
       agent: { https: this.keepAliveAgent }
     }).buffer();
   }

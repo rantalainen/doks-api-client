@@ -1,3 +1,5 @@
+import CacheableLookup from 'cacheable-lookup';
+
 export interface IDoksApiClientOptions {
   /** API version that should be used, `v1.85` for example. Uses latest API version, `current`, by default */
   apiVersion?: string;
@@ -10,6 +12,9 @@ export interface IDoksApiClientOptions {
 
   /** API user email */
   email: string;
+
+  /** Instance of cacheable-lookup@5 or `true` when using internal cache, defaults to `false`  */
+  dnsCache?: CacheableLookup | boolean;
 }
 
 type IDoksStatusTypes = 0 | 1;
