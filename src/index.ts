@@ -1,4 +1,4 @@
-import got, { Headers, Method, OptionsOfJSONResponseBody } from 'got';
+import got, { Got, Headers, Method, OptionsOfJSONResponseBody } from 'got';
 import {
   IDoksActualBeneficiaryDocumentWithMetadata,
   IDoksApiClientOptions,
@@ -19,16 +19,15 @@ import {
 
 import { HttpsAgent } from 'agentkeepalive';
 import * as validators from './helpers/validators';
-import CacheableLookup from 'cacheable-lookup';
 
+// Create global https agent and cacheable lookup
 const httpsAgent = new HttpsAgent();
-const cacheableLookup = new CacheableLookup();
 
 export class DoksApiClient {
   options!: IDoksApiClientOptions;
 
-  /** @private */
-  keepAliveAgent: HttpsAgent = httpsAgent;
+  /** Got instance to be used when making requests */
+  gotInstance: Got;
 
   /** @private */
   accessToken: string | undefined;
@@ -39,26 +38,32 @@ export class DoksApiClient {
   constructor(options: IDoksApiClientOptions) {
     this.options = options;
 
-    if (!this.options.apikey) {
-      throw new Error('Missing options.apikey');
+    // Check that needed options are included
+    if (!this.options.apikey) throw new Error('Missing options.apikey');
+    if (!this.options.email) throw new Error('Missing options.email');
+
+    // Set default base url and api version if none was provided
+    if (!this.options.apiBaseUrl) this.options.apiBaseUrl = 'https://data.doks.fi/api';
+    if (!this.options.apiVersion) this.options.apiVersion = 'current';
+
+    // Use internal keepAliveAgent by default
+    if (this.options.keepAliveAgent === true || this.options.keepAliveAgent === undefined) {
+      this.options.keepAliveAgent = httpsAgent;
     }
 
-    if (!this.options.email) {
-      throw new Error('Missing options.email');
+    // Use internal dnsCache by default (falls back to got's dnsCache)
+    if (this.options.dnsCache === true || this.options.dnsCache === undefined) {
+      this.options.dnsCache = true;
     }
 
-    if (!this.options.apiBaseUrl) {
-      this.options.apiBaseUrl = 'https://data.doks.fi/api';
-    }
+    // Set gotInstance defaults, can also include other options
+    this.gotInstance = got.extend({
+      // Agent options
+      agent: { https: this.options.keepAliveAgent || undefined },
 
-    if (!this.options.apiVersion) {
-      this.options.apiVersion = 'current';
-    }
-
-    // If dnsCache is true, then fallback to internal instance of cacheableLookup
-    if (this.options.dnsCache === true) {
-      this.options.dnsCache = cacheableLookup;
-    }
+      // DNS caching options
+      dnsCache: this.options.dnsCache || undefined
+    });
   }
 
   /** @private */
@@ -70,17 +75,13 @@ export class DoksApiClient {
   async refreshAccessToken(): Promise<void> {
     // If refreshing access token is necessary
     if (!this.accessToken) {
-      const accessTokenResult: IDoksApiResponse = await got({
+      const accessTokenResult: IDoksApiResponse = await this.gotInstance({
         url: `${this.options.apiBaseUrl}/${this.options.apiVersion}/user/auth`,
         method: 'POST',
-        agent: { https: this.keepAliveAgent },
         json: {
           apikey: this.options.apikey,
           email: this.options.email
         },
-
-        dnsCache: this.options.dnsCache || undefined,
-
         resolveBodyOnly: true
       }).json();
 
@@ -109,17 +110,10 @@ export class DoksApiClient {
   async request(method: Method, uri: string, json?: any, params?: any): Promise<any> {
     const gotOptions: OptionsOfJSONResponseBody = {
       url: this.constructUrl(uri),
-
       headers: await this.getDefaultHttpHeaders(),
-      agent: { https: this.keepAliveAgent },
-
-      dnsCache: this.options.dnsCache || undefined,
-
       responseType: 'json',
       throwHttpErrors: false,
-
       searchParams: params,
-
       method
     };
 
@@ -128,7 +122,7 @@ export class DoksApiClient {
       gotOptions.json = json;
     }
 
-    const response: IDoksApiResponse = await got({ ...gotOptions, resolveBodyOnly: true });
+    const response: IDoksApiResponse = await this.gotInstance({ ...gotOptions, resolveBodyOnly: true });
 
     if (!response.status) {
       return this.httpErrorHandler(response);
@@ -303,13 +297,11 @@ export class DoksApiClient {
     // Fetch short lived access token for PDF fetching
     await this.refreshAccessToken();
 
-    return await got({
+    return await this.gotInstance({
       method: 'GET',
       url: this.constructUrl(`user/customers/${customerId}/pdf`),
       searchParams: { jwt: this.accessToken, ...params },
-      resolveBodyOnly: true,
-      dnsCache: this.options.dnsCache || undefined,
-      agent: { https: this.keepAliveAgent }
+      resolveBodyOnly: true
     }).buffer();
   }
 
@@ -324,13 +316,11 @@ export class DoksApiClient {
   ): Promise<Buffer> {
     await this.refreshAccessToken();
 
-    return await got({
+    return await this.gotInstance({
       method: 'GET',
       url: this.constructUrl(`user/customers/${customerId}/requests/${informationRequestId}/pdf`),
       searchParams: { jwt: this.accessToken, ...params },
-      resolveBodyOnly: true,
-      dnsCache: this.options.dnsCache || undefined,
-      agent: { https: this.keepAliveAgent }
+      resolveBodyOnly: true
     }).buffer();
   }
 
