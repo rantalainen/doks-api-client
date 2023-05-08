@@ -217,7 +217,18 @@ export class DoksApiClient {
    */
   async createIdentificationByCustomerId(customerId: string, identification: Partial<IDoksIdentification>): Promise<IDoksIdentification> {
     if (!identification.available_eidmethods && this.options.apiVersion == 'current') {
-      identification['available_eidmethods'] = ['NETSEIDENT_BANKID_FI', 'NETSEIDENT_MOBIILIVARMENNE_FI'];
+      identification['available_eidmethods'] = [
+        'NETSEIDENT_BANKID_FI',
+        'NETSEIDENT_MOBIILIVARMENNE_FI',
+        'NETSEIDENT_PASSPORTREADER',
+        'PASSPORTFILE',
+        'NETSEIDENT_BANKID_SE',
+        'NETSEIDENT_BANKID_NO',
+        'NETSEIDENT_BANKID_MOBILE_NO',
+        'NETSEIDENT_MITID_DK',
+        'NETSEIDENT_SMARTID',
+        'NETSEIDENT_MOBILEID'
+      ];
     }
 
     return await this.request('POST', `user/customers/${customerId}/identifications`, identification);
