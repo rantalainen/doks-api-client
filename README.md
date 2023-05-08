@@ -43,8 +43,11 @@ const doks = new DoksApiClient({
   apiVersion: 'v1.89', // lock api version
   apiBaseUrl: 'https://url', // change base url, defaults to https://data.doks.fi/api
 
-  // optional - set to true if you want to use internal cache within Doks API Client
-  dnsCache: dnsCache
+  // Optional: keep alive agent
+  keepAliveAgent: true,
+
+  // Optional: DNS cache
+  dnsCache: true,
 });
 ```
 
@@ -151,3 +154,4 @@ const validBusinessId = doks.isValidBusinessId('1234567-8'); // true or false
 - 1.3.0 Added buyResponsiblePersonsByCustomerId and buyTradeRegisterByCustomerId
 - 1.3.4 Instantiate HTTPS KeepAliveAgent outside the class to get the most out of it
 - 1.4.0 Add dns caching possibility with cacheableLookup
+- 2.0.0 Added httpsAgent keep alive support and updated DNS caching options

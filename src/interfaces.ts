@@ -1,4 +1,5 @@
 import CacheableLookup from 'cacheable-lookup';
+import * as https from 'https';
 
 export interface IDoksApiClientOptions {
   /** API version that should be used, `v1.85` for example. Uses latest API version, `current`, by default */
@@ -13,8 +14,11 @@ export interface IDoksApiClientOptions {
   /** API user email */
   email: string;
 
-  /** Instance of cacheable-lookup@5 or `true` when using internal cache, defaults to `false`  */
-  dnsCache?: CacheableLookup | boolean;
+  /** Instance of `https.Agent` or `true` to enable internal Keep Alive Agent, defaults to `true` */
+  keepAliveAgent?: boolean | https.Agent;
+
+  /** Instance of `cacheable-lookup` or `true` to enable internal DNS cache, defaults to `true` */
+  dnsCache?: boolean | CacheableLookup;
 }
 
 type IDoksStatusTypes = 0 | 1;
