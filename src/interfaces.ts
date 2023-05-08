@@ -83,7 +83,17 @@ export interface IDoksCustomer {
 
 type IDoksLanguage = 'FI' | 'EN' | 'SE';
 
-type IDoksEIdMethods = 'PASSPORTFILE' | 'NETSEIDENT_BANKID_FI' | 'NETSEIDENT_MOBIILIVARMENNE_FI' | 'NETSEIDENT_PASSPORTREADER';
+type IDoksEIdMethods =
+  | 'NETSEIDENT_BANKID_FI'
+  | 'NETSEIDENT_MOBIILIVARMENNE_FI'
+  | 'NETSEIDENT_PASSPORTREADER'
+  | 'PASSPORTFILE'
+  | 'NETSEIDENT_BANKID_SE'
+  | 'NETSEIDENT_BANKID_NO'
+  | 'NETSEIDENT_BANKID_MOBILE_NO'
+  | 'NETSEIDENT_MITID_DK'
+  | 'NETSEIDENT_SMARTID'
+  | 'NETSEIDENT_MOBILEID';
 
 export interface IDoksIdentification {
   id: string;
@@ -122,6 +132,8 @@ export interface IDoksInformationRequest {
   users_id: string;
   is_answered: boolean;
 
+  ask_basic: boolean;
+
   /** Ask for free text */
   ask_freetext: boolean;
 
@@ -140,6 +152,21 @@ export interface IDoksInformationRequest {
   /** Set risk questions type (defined in Doks GUI) */
   riskquestions_type?: string;
 
+  /** Ask for owners */
+  ask_owners: boolean;
+
+  /** Pre-fill owners from latest available data */
+  prefill_owners: boolean;
+
+  /** Auto-add answered owners to Customer card */
+  autofill_owners: boolean;
+
+  /** Allow add file for owners */
+  ask_owners_allowfile: boolean;
+
+  /** Free-form description text for owners */
+  ask_owners_description: string;
+
   /** Ask for actual beneficiaries */
   ask_actualbeneficiaries: boolean;
 
@@ -148,6 +175,9 @@ export interface IDoksInformationRequest {
 
   /** Auto-add answered actual beneficiaries to Customer card */
   autofill_actualbeneficiaries: boolean;
+
+  /** Free-form description text for actual beneficiaries */
+  ask_actualbeneficiaries_description: string;
 
   /** Ask for responsible persons */
   ask_responsiblepersons: boolean;
@@ -164,6 +194,9 @@ export interface IDoksInformationRequest {
   /** Auto-add answered responsible persons to Customer card */
   autofill_responsiblepersons: boolean;
 
+  /** Free-form description text for responsible persons */
+  ask_responsiblepersons_description: string;
+
   /** Ask for PEP-persons */
   ask_peps: boolean;
 
@@ -172,6 +205,18 @@ export interface IDoksInformationRequest {
 
   /** Auto-add answered pep-persons to Customer card */
   autofill_peps: boolean;
+
+  /** Free-form description text for PEP-persons */
+  ask_peps_description: string;
+
+  /** Allow attachments */
+  ask_files: boolean;
+
+  /** Select if attachments are mandatory */
+  ask_files_mandatory: boolean;
+
+  /** Free-form description text for ask_files */
+  ask_files_description: string;
 
   email: string;
   /** Description is visible in identification form */
