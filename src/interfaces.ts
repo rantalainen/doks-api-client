@@ -138,13 +138,13 @@ export interface IDoksInformationRequest {
   ask_freetext: boolean;
 
   /** Free-form description text for free text */
-  ask_freetext_description: boolean;
+  ask_freetext_description: string;
 
   /** Ask for source of fund */
   ask_sof: boolean;
 
   /** Free-form description text for source of fund */
-  ask_sof_description: boolean;
+  ask_sof_description: string;
 
   /** Ask for riskquestions */
   ask_riskquestions: boolean;
