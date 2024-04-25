@@ -238,8 +238,12 @@ export class DoksApiClient {
   /**
    * TODO: Add documentation
    */
-  async sendIdentificationByCustomerAndIdentificationId(customerId: string, identificationId: string): Promise<IDoksIdentification> {
-    return await this.request('POST', `user/customers/${customerId}/identifications/${identificationId}/send`, {});
+  async sendIdentificationByCustomerAndIdentificationId(
+    customerId: string,
+    identificationId: string,
+    options: { skip_email?: true } = {}
+  ): Promise<IDoksIdentification> {
+    return await this.request('POST', `user/customers/${customerId}/identifications/${identificationId}/send`, options);
   }
 
   /**
