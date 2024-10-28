@@ -398,3 +398,37 @@ export interface IDoksRiskAnswerQuestionAnswer {
 
   [propName: string]: any;
 }
+
+export interface IDoksUser {
+  id: string;
+  autologout_timeout: number;
+  created_at: number;
+  disable_uilogin: boolean;
+  email: string;
+  force_passwordchange: boolean;
+  info_email: string;
+  is_active: boolean;
+  is_admin: boolean;
+  language: string;
+  lastlogin_at: number | null;
+  lastlogin_identifier: string | null;
+  mfauth_tel: string;
+  name: string;
+  notifications_email: string;
+  notifications_sms: string;
+  organizations_id: string;
+  prevlogin_at: number | null;
+  receive_info_features: boolean;
+  receive_info_newsletter: boolean;
+  receive_info_service: boolean;
+  receive_notifications: boolean;
+  receive_weeklyreport: boolean;
+  restrictiontype: string;
+  tel: string;
+  ui_type: string;
+  updated_at: number;
+  use_mfauth: boolean;
+  weeklyreport_email: string;
+
+  [propName: string]: any;
+}
