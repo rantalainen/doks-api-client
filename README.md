@@ -14,13 +14,7 @@ npm install doks-api-client
 
 ## Setup
 
-### Import to NodeJS project
-
-```javascript
-const { DoksApiClient } = require('doks-api-client');
-```
-
-### Import to TypeScript project
+### Import
 
 ```javascript
 import { DoksApiClient } from 'doks-api-client';
@@ -47,7 +41,7 @@ const doks = new DoksApiClient({
   keepAliveAgent: true,
 
   // Optional: DNS cache
-  dnsCache: true,
+  dnsCache: true
 });
 ```
 
@@ -130,6 +124,14 @@ const owners = await doks.getOwnersByCustomerId('customer_id');
 const responsiblePerson = await doks.getResponsiblePersonsByCustomerId('customer_id');
 const pep = await doks.getPepsByCustomerId('customer_id');
 const actualBeneficiary = await doks.getActualBeneficiariesByCustomerId('customer_id');
+
+// Get API user details
+const apiUser = await doks.getAPIUser();
+// Get user details by ID
+const user = await doks.getUserById('user_id');
+
+// Update user details (note! requires whole user resource fetched by getAPIUser or getUserById)
+await doks.updateUser(user);
 ```
 
 ## Helpers
@@ -140,18 +142,3 @@ Contains some helpers for handling customers details.
 // Validate business id
 const validBusinessId = doks.isValidBusinessId('1234567-8'); // true or false
 ```
-
-## Changelog
-
-- 0.0.1 Under development
-- 0.0.4 Add actual beneficiaries document purchase option
-- 0.0.8 Fixed jwt token fetch in get pdf summary
-- 0.0.10 Update customer with patchCustomerById, added property available_eidmethods to IDoksIdentification
-- 0.0.11 Added risk assesments and scores
-- 1.0.0 Adapt to breaking changes on Doks API (January 2022), changed properties for owners and added actualBeneficiary, responsiblePerson and pep resources
-- 1.1.0 Added riskanswers
-- 1.2.0 Added informationRequestPdf
-- 1.3.0 Added buyResponsiblePersonsByCustomerId and buyTradeRegisterByCustomerId
-- 1.3.4 Instantiate HTTPS KeepAliveAgent outside the class to get the most out of it
-- 1.4.0 Add dns caching possibility with cacheableLookup
-- 2.0.0 Added httpsAgent keep alive support and updated DNS caching options

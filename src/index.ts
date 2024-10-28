@@ -14,7 +14,8 @@ import {
   IDoksRiskAssesment,
   IDoksActualBeneficiary,
   IDoksResponsiblePerson,
-  IDoksPep
+  IDoksPep,
+  IDoksUser
 } from './interfaces';
 
 import { HttpsAgent } from 'agentkeepalive';
@@ -159,6 +160,34 @@ export class DoksApiClient {
    */
   async getCustomerById(customerId: string): Promise<IDoksCustomer> {
     return await this.request('GET', `user/customers/${customerId}`);
+  }
+
+  /**
+   * Gets information about current user (API key owner)
+   */
+  async getAPIUser(): Promise<IDoksUser> {
+    return await this.request('GET', `user/users/me`);
+  }
+
+  /**
+   * Gets information about user by id
+   */
+  async getUserById(userId: string): Promise<IDoksUser> {
+    return await this.request('GET', `user/users/${userId}`);
+  }
+
+  /**
+   * Update user
+   * @param user User object (should be pre-fetched with `getAPIUser`, all properties mandatory)
+   *
+   * @example
+   * // Gets current API user and updates language to Swedish
+   * const user = await doks.getAPIUser();
+   * user.language = 'sv';
+   * await doks.updateUser(user);
+   */
+  async updateUser(user: IDoksUser): Promise<IDoksUser> {
+    return await this.request('PUT', `user/users/${user.id}`, user);
   }
 
   /**
