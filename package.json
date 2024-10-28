@@ -22,7 +22,6 @@
   },
   "dependencies": {
     "agentkeepalive": "^4.1.4",
-    "cacheable-lookup": "^5.0.4",
     "got": "^11.8.6"
   },
   "files": [
