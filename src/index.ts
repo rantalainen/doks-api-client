@@ -473,6 +473,23 @@ export class DoksApiClient {
   /**
    * @returns `document` if document found or `undefined` if document could not be found
    */
+  async buyAssociationRegisterByCustomerId(customerId: string): Promise<IDoksDocument | undefined> {
+    try {
+      const document = await this.request('POST', `user/customers/${customerId}/documents/buy/associationregister`, {});
+
+      return document;
+    } catch (e: any) {
+      if (e.message?.includes('USER_CUSTOMERS_DOCUMENTS_FILE_NOT_FOUND')) {
+        return undefined;
+      } else {
+        throw e;
+      }
+    }
+  }
+
+  /**
+   * @returns `document` if document found or `undefined` if document could not be found
+   */
   async buyResponsiblePersonsByCustomerId(customerId: string): Promise<IDoksActualBeneficiaryDocumentWithMetadata | undefined> {
     try {
       const document = await this.request('POST', `user/customers/${customerId}/documents/buy/responsiblepersons`, {});
