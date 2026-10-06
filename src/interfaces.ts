@@ -232,6 +232,12 @@ export interface IDoksInformationRequest {
   resent_at: number;
   /** UTC unix timestamp */
   answered_at: number;
+
+  /** Require identification for the customer */
+  require_identification: boolean;
+
+  /** Available eID methods for the customer */
+  available_eidmethods?: string[];
 }
 
 export interface IDoksOwner {
