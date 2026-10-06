@@ -233,10 +233,10 @@ export interface IDoksInformationRequest {
   /** UTC unix timestamp */
   answered_at: number;
 
-  /** Require identification for the customer */
+  /** Set always true, so the customer is required to identify themselves as well */
   require_identification: boolean;
 
-  /** Available eID methods for the customer */
+  /** Available identification options for the customer. Used only during requests, so this field may not be present in responses */
   available_eidmethods?: string[];
 }
 
