@@ -3,12 +3,13 @@
 
 name: Npm Publish Package
 
-env:
-  NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
-
 on:
   release:
     types: [created]
+
+permissions:
+  id-token: write
+  contents: read
 
 jobs:
   publish-npm:
