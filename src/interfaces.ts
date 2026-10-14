@@ -236,6 +236,9 @@ export interface IDoksInformationRequest {
   /** Set always true, so the customer is required to identify themselves as well */
   require_identification: boolean;
 
+  /** Name used for identification purposes. Recommended option than 'name' property */
+  identification_name?: string;
+
   /** Available identification options for the customer. Used only during requests, so this field may not be present in responses */
   available_eidmethods?: string[];
 }
